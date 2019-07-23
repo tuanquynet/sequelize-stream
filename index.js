@@ -17,9 +17,7 @@ const DEFAULT_BATCH_SIZE = 100;
 async function performSearch(model, inputStream, { batchSize = DEFAULT_BATCH_SIZE, limit, offset = 0, ...params }) {
   try {
     let max = limit;
-    if (!max) {
-      max = await model.count({ ...params, limit, offset });
-    }
+    max = Math.min(await model.count({ ...params, limit, offset }), limit);
     const offsets = [];
     let start = offset;
     while (start < max) {
